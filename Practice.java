@@ -19,7 +19,52 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
+        int[] intArr = {};
+        System.out.println(findMissingRanges(intArr, 1, 1));
+    }
 
+    public static List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> result = new ArrayList<>();
+        int prev = lower - 1;
+        for (int i = 0; i <= nums.length; i++) {
+            int curr = (i < nums.length) ? nums[i] : upper + 1;
+            if (prev + 1 <= curr - 1) {
+                result.add(formatRange(prev + 1, curr - 1));
+            }
+            prev = curr;
+        }
+        return result;
+    }
+
+    private static String formatRange(int lower, int upper) {
+        if (lower == upper) {
+            return String.valueOf(lower);
+        }
+        return lower + "->" + upper;
+    }
+
+    public static int maxLengthBetweenEqualCharacters(String s) {
+        int maxLength = Integer.MIN_VALUE;
+        HashMap<Character, int[]> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char a = s.charAt(i);
+            if (map.containsKey(a)) {
+                int[] tempArr = map.get(a);
+                tempArr[1] = i;
+                map.put(a, tempArr);
+            } else {
+                int[] newArr = new int[2];
+                newArr[0] = i;
+                map.put(a, newArr);
+            }
+        }
+
+        for (Character key : map.keySet()) {
+            if (map.get(key)[1] - map.get(key)[0] - 1 > maxLength) {
+                maxLength = map.get(key)[1] - map.get(key)[0] - 1;
+            }
+        }
+        return maxLength;
     }
 
     public int[] searchRange(int[] nums, int target) {
