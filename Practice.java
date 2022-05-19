@@ -19,8 +19,87 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] intArr = {};
-        System.out.println(findMissingRanges(intArr, 1, 1));
+        int[] arr = { 3, 8, -10, 23, 19, -4, -14, 27 };
+        minimumAbsDifference(arr);
+    }
+
+    public static List<List<Integer>> minimumAbsDifference(int[] arr) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(arr);
+        int minDiff = Integer.MAX_VALUE;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] - arr[i - 1] < minDiff) {
+                minDiff = arr[i] - arr[i - 1];
+            }
+        }
+
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] - arr[i - 1] == minDiff) {
+                List<Integer> tempList = new ArrayList<>();
+                tempList.add(arr[i - 1]);
+                tempList.add(arr[i]);
+                res.add(tempList);
+            }
+        }
+        return res;
+    }
+
+    public static String reverseVowels(String s) {
+        Set<Character> set = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
+        char[] arr = s.toCharArray();
+        int left = 0, right = arr.length - 1;
+        while (left < right) {
+            if (!set.contains(arr[left])) {
+                left++;
+            } else if (!set.contains(arr[right])) {
+                right--;
+            } else {
+                char tmp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = tmp;
+                left++;
+                right--;
+            }
+        }
+        return new String(arr);
+    }
+
+    public List<Integer> arraysIntersection(int[] arr1, int[] arr2, int[] arr3) {
+        List<Integer> list = new ArrayList<>();
+        int p1 = 0, p2 = 0, p3 = 0;
+
+        while (p1 < arr1.length && p2 < arr2.length && p3 < arr3.length) {
+            if (arr1[p1] == arr2[p2] && arr1[p1] == arr3[p3]) {
+                list.add(arr1[p1]);
+                p1++;
+                p2++;
+                p3++;
+            } else if (arr1[p1] < arr2[p2]) {
+                p1++;
+            } else if (arr2[p2] < arr3[p3]) {
+                p2++;
+            } else {
+                p3++;
+            }
+
+        }
+        return list;
+    }
+
+    public static int largestUniqueNumber(int[] nums) {
+        if (nums.length == 1)
+            return nums[0];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        int largest = -1;
+        for (Integer a : map.keySet()) {
+            if (a > largest && map.get(a) == 1) {
+                largest = a;
+            }
+        }
+        return largest;
     }
 
     public static List<String> findMissingRanges(int[] nums, int lower, int upper) {
