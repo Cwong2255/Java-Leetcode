@@ -19,8 +19,59 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 3, 8, -10, 23, 19, -4, -14, 27 };
-        minimumAbsDifference(arr);
+        int[] arr = { 3, 30, 34, 5, 9 };
+
+    }
+
+    public static int findMaxConsecutiveOnes(int[] nums) {
+        int index = 0, maxCount = 0;
+
+        while (index < nums.length) {
+            int tempCount = 0;
+            if (nums[index] == 1) {
+                tempCount++;
+                index++;
+                while (index < nums.length && nums[index] == 1) {
+                    tempCount++;
+                    index++;
+                }
+                maxCount = Math.max(maxCount, tempCount);
+            }
+            index++;
+        }
+
+        return maxCount;
+    }
+
+    public static int thirdMax(int[] nums) {
+        Set<Integer> max = new HashSet<>();
+        for (int a : nums) {
+            max.add(a);
+            if (max.size() > 3) {
+                max.remove(Collections.min(max));
+            }
+        }
+        return max.size() == 3 ? Collections.min(max) : Collections.max(max);
+    }
+
+    public static int maximum69Number(int num) {
+        if (num % 10 == num) {
+            return 9;
+        }
+        boolean switched = false;
+        String tempString = String.valueOf(num);
+        StringBuilder maxInt = new StringBuilder();
+
+        for (int i = 0; i < tempString.length(); i++) {
+            if (tempString.charAt(i) == '6' && !switched) {
+                switched = true;
+                maxInt.append(9);
+            } else {
+                maxInt.append(tempString.charAt(i));
+            }
+        }
+
+        return Integer.parseInt(maxInt.toString());
     }
 
     public static List<List<Integer>> minimumAbsDifference(int[] arr) {
