@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,8 +20,77 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 3, 30, 34, 5, 9 };
+        int[] arr = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
+        System.out.println(maxArea(arr));
+    }
 
+    public static int maxArea(int[] height) {
+        int maxArea = 0, left = 0, right = height.length - 1;
+        while (left < right) {
+            int currArea = Math.min(height[left], height[right]) * (right - left);
+            maxArea = Math.max(maxArea, currArea);
+            if (height[left] <= height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return maxArea;
+    }
+
+    static class MyStack {
+
+        private Queue<Integer> queue;
+
+        public MyStack() {
+            this.queue = new ArrayDeque<>();
+        }
+
+        public void push(int x) {
+            queue.add(x);
+            int k = queue.size();
+            for (int i = 0; i < k - 1; i++) {
+                queue.add(queue.remove());
+            }
+        }
+
+        public int pop() {
+            return queue.remove();
+        }
+
+        public int top() {
+            return queue.peek();
+        }
+
+        public boolean empty() {
+            return queue.isEmpty();
+        }
+
+    }
+
+    public static int[] findErrorNums(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] err = new int[2];
+        int count = 1;
+        for (int i = 0; i < nums.length; i++) {
+            map.putIfAbsent(count, 0);
+            if (map.containsKey(nums[i])) {
+                map.put(nums[i], map.get(nums[i]) + 1);
+                if (map.get(nums[i]) == 2) {
+                    err[0] = nums[i];
+                }
+            } else {
+                map.put(nums[i], 1);
+            }
+            count++;
+        }
+        for (Integer a : map.keySet()) {
+            if (map.get(a) == 0) {
+                err[1] = a;
+                break;
+            }
+        }
+        return err;
     }
 
     public static int findMaxConsecutiveOnes(int[] nums) {
