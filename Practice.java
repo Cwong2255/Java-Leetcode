@@ -20,8 +20,90 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
-        System.out.println(maxArea(arr));
+        int[] arr = { 2, 3, 4 };
+        System.out.println(Arrays.toString(twoSum(arr, 6)));
+    }
+
+    public static int[] twoSumSorted(int[] numbers, int target) {
+        int left = 0, right = numbers.length - 1, sum = 0;
+        while (left < right) {
+            sum = numbers[left] + numbers[right];
+            if (sum == target) {
+                return new int[] { ++left, ++right };
+            } else if (sum > target) {
+                right--;
+            } else {
+                left++;
+            }
+
+        }
+        return new int[2];
+    }
+
+    public static boolean hasAllCodes(String s, int k) {
+        int need = 1 << k;
+        boolean[] got = new boolean[need];
+        int allOne = need - 1;
+        int hashVal = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // calculate hash for s.substr(i-k+1,i+1)
+            hashVal = ((hashVal << 1) & allOne) | (s.charAt(i) - '0');
+            // hash only available when i-k+1 > 0
+            if (i >= k - 1 && !got[hashVal]) {
+                got[hashVal] = true;
+                need--;
+                if (need == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int a = Math.abs(dividend);
+        int b = Math.abs(divisor);
+        int res = 0;
+        while (a - b >= 0) {
+            int x = 0;
+            while (a - ((b << 1) << x) >= 0) {
+                x++;
+            }
+            res += 1 << x;
+            a -= b << x;
+        }
+        return (dividend >= 0) == (divisor >= 0) ? res : -res;
+    }
+
+    public static int maxProduct(String[] words) {
+        int maxProduct = 0, index = 0;
+        while (index < words.length - 1) {
+            HashSet<Character> set = new HashSet<>();
+            for (char a : words[index].toCharArray()) {
+                set.add(a);
+            }
+            int tempIndex = index + 1;
+            while (tempIndex < words.length) {
+                boolean flag = false;
+                HashSet<Character> tempSet = new HashSet<>();
+                for (char b : words[tempIndex].toCharArray()) {
+                    if (set.contains(b)) {
+                        flag = true;
+                        break;
+                    }
+                    tempSet.add(b);
+                }
+                if (!flag) {
+                    maxProduct = Math.max(maxProduct, words[index].length() * words[tempIndex].length());
+                }
+                tempIndex++;
+            }
+            index++;
+        }
+        return maxProduct;
     }
 
     public static int maxArea(int[] height) {
