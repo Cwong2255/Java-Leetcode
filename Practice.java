@@ -20,8 +20,81 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 2, 3, 4 };
-        System.out.println(Arrays.toString(twoSum(arr, 6)));
+        int[] arr = { 2, 3, 1, 2, 4, 3 };
+        System.out.println(minSubArrayLen(7, arr));
+    }
+
+    public static int minSubArrayLen(int target, int[] nums) {
+        int minLen = Integer.MAX_VALUE, left = 0, currSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            currSum += nums[i];
+            while (currSum >= target) {
+                minLen = Math.min(minLen, (i - left) + 1);
+                currSum -= nums[left++];
+            }
+        }
+        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+    }
+
+    public static int maximumUniqueSubarray(int[] nums) {
+        if (nums.length == 1)
+            return nums[0];
+        int maxSum = 0, left = 0, right = 1, sum = nums[0];
+        HashSet<Integer> set = new HashSet<>();
+        set.add(nums[left]);
+        while (right < nums.length) {
+            if (!set.contains(nums[right])) {
+                sum += nums[right];
+                maxSum = Math.max(maxSum, sum);
+                set.add(nums[right]);
+                right++;
+            } else {
+                sum -= nums[left];
+                set.remove(nums[left]);
+                left++;
+            }
+        }
+        return maxSum;
+    }
+
+    public static int minOperations(int[] nums, int x) {
+        int target = -x;
+        for (int i : nums)
+            target += i;
+        if (target == 0)
+            return nums.length;
+        else if (target < 0)
+            return -1;
+        int res = -1, sum = 0, left = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            while (sum > target) {
+                sum -= nums[left++];
+            }
+            if (sum == target) {
+                res = Math.max(res, i - left + 1);
+            }
+        }
+        return res == -1 ? -1 : nums.length - res;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        if (s.length() < 2)
+            return s.length();
+        int p1 = 0, p2 = 0;
+        int max = 0;
+        HashSet<Character> newSet = new HashSet<>();
+        while (p2 < s.length()) {
+            if (!newSet.contains(s.charAt(p2))) {
+                newSet.add(s.charAt(p2));
+                p2++;
+                max = Math.max(newSet.size(), max);
+            } else {
+                newSet.remove(s.charAt(p1));
+                p1++;
+            }
+        }
+        return max;
     }
 
     public static int[] twoSumSorted(int[] numbers, int target) {
@@ -814,25 +887,6 @@ class Practice {
             }
         }
         return true;
-    }
-
-    public static int lengthOfLongestSubstring(String s) {
-        if (s.length() < 2)
-            return s.length();
-        int p1 = 0, p2 = 0;
-        int max = 0;
-        HashSet<Character> newSet = new HashSet<>();
-        while (p2 < s.length()) {
-            if (!newSet.contains(s.charAt(p2))) {
-                newSet.add(s.charAt(p2));
-                p2++;
-                max = Math.max(newSet.size(), max);
-            } else {
-                newSet.remove(s.charAt(p1));
-                p1++;
-            }
-        }
-        return max;
     }
 
     public static List<List<Integer>> generate2(int numRows) {
