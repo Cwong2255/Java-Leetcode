@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -20,8 +21,27 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 2, 3, 1, 2, 4, 3 };
-        System.out.println(minSubArrayLen(7, arr));
+        int[] arr = { 4, 2, 7, 6, 9, 14, 12 };
+        System.out.println(furthestBuilding(arr, 5, 1));
+    }
+
+    public static int furthestBuilding(int[] heights, int bricks, int ladders) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int i = 0; i < heights.length - 1; i++) {
+            int diff = heights[i + 1] - heights[i];
+            if (diff <= 0) {
+                continue;
+            }
+            minHeap.add(diff);
+            if (minHeap.size() > ladders) {
+                bricks -= minHeap.remove();
+            }
+            if (bricks < 0) {
+                return i;
+            }
+
+        }
+        return heights.length - 1;
     }
 
     public static int minSubArrayLen(int target, int[] nums) {
