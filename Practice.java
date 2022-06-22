@@ -21,8 +21,19 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 4, 2, 7, 6, 9, 14, 12 };
-        System.out.println(furthestBuilding(arr, 5, 1));
+        int[] arr = { 3, 2, 3, 1, 2, 4, 5, 5, 6 };
+        System.out.println(findKthLargest(arr, 4));
+    }
+
+    public static int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int a : nums) {
+            minHeap.add(a);
+            if (minHeap.size() > k) {
+                minHeap.remove();
+            }
+        }
+        return minHeap.peek();
     }
 
     public static int furthestBuilding(int[] heights, int bricks, int ladders) {
