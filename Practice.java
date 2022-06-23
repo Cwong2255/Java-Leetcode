@@ -21,8 +21,29 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 3, 2, 3, 1, 2, 4, 5, 5, 6 };
-        System.out.println(findKthLargest(arr, 4));
+        int[][] arr = { { 1, 19 }, { 2, 2 }, { 1, 17 } };
+        System.out.println(scheduleCourse(arr));
+    }
+
+    public static int scheduleCourse(int[][] courses) {
+        Arrays.sort(courses, (a, b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        int time = 0;
+        for (int[] course : courses) {
+            if (course[0] <= course[1]) {
+                if (course[0] + time <= course[1]) {
+                    maxHeap.add(course[0]);
+                    time += course[0];
+                } else {
+                    if (maxHeap.peek() > course[0]) {
+                        time -= maxHeap.remove();
+                        maxHeap.add(course[0]);
+                        time += course[0];
+                    }
+                }
+            }
+        }
+        return maxHeap.size();
     }
 
     public static int findKthLargest(int[] nums, int k) {
