@@ -21,8 +21,33 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[][] arr = { { 1, 19 }, { 2, 2 }, { 1, 17 } };
-        System.out.println(scheduleCourse(arr));
+        int[] arr = { 1, 1, 1, 2 };
+        System.out.println(isPossible(arr));
+    }
+
+    public static boolean isPossible(int[] target) {
+        long sum = 0, diff = 0;
+        int max = 0;
+
+        for (int i = 0; i < target.length; i++) {
+            sum += target[i];
+            if (target[max] < target[i]) {
+                max = i;
+            }
+        }
+
+        diff = sum - target[max];
+
+        if (target[max] == 1 || diff == 1) {
+            return true;
+        } else if (diff > target[max] || diff == 0 || target[max] % diff == 0) {
+            return false;
+        }
+
+        target[max] %= diff;
+
+        return isPossible(target);
+
     }
 
     public static int scheduleCourse(int[][] courses) {
