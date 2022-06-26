@@ -21,8 +21,105 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 1, 1, 2 };
-        System.out.println(isPossible(arr));
+        String[] keyStrings = { "daniel", "daniel", "daniel", "luis", "luis", "luis", "luis" };
+        String[] timeStrings = { "10:00", "10:40", "11:00", "09:00", "11:00", "13:00", "15:00" };
+    }
+
+    public static List<String> alertNames(String[] keyName, String[] keyTime) {
+        List<String> names = new ArrayList<>();
+        Arrays.sort(keyTime);
+        return names;
+    }
+
+    public static int longestCommonSubsequence(String text1, String text2) {
+        int dp[][] = new int[text1.length() + 1][text2.length() + 1];
+        for (int i = 1; i < text1.length() + 1; i++) {
+            for (int j = 1; j < text2.length() + 1; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+                }
+            }
+        }
+        return dp[text1.length()][text2.length()];
+    }
+
+    public static int findLength(int[] nums1, int[] nums2) {
+        int res = 0;
+        int[][] dp = new int[nums1.length + 1][nums2.length + 1];
+        for (int i = 1; i <= nums1.length; i++) {
+            for (int j = 1; j <= nums2.length; j++) {
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    res = Math.max(res, dp[i][j]);
+                }
+            }
+        }
+        return res;
+    }
+
+    public static List<String> subdomainVisits(String[] cpdomains) {
+        HashMap<String, Integer> dMap = new HashMap<>();
+        ArrayList<String> res = new ArrayList<>();
+        for (String domain : cpdomains) {
+            String[] tempArr = domain.split(" ");
+            String[] frags = tempArr[1].split("\\.");
+            String curString = "";
+            for (int i = frags.length - 1; i > -1; i--) {
+                curString = frags[i] + (i < frags.length - 1 ? "." : "") + curString;
+                dMap.put(curString, dMap.getOrDefault(curString, 0) + Integer.valueOf(tempArr[0]));
+            }
+        }
+
+        for (String a : dMap.keySet()) {
+            res.add(dMap.get(a) + " " + a);
+        }
+
+        return res;
+    }
+
+    public static int[] topKFrequent(int[] nums, int k) {
+        if (k == nums.length) {
+            return nums;
+        }
+        int[] res = new int[k];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((n1, n2) -> map.get(n2) - map.get(n1));
+        for (int a : nums) {
+            map.put(a, map.getOrDefault(a, 0) + 1);
+        }
+        for (Integer a : map.keySet()) {
+            maxHeap.offer(a);
+        }
+
+        for (int i = 0; i < res.length; i++) {
+            res[i] = maxHeap.poll();
+        }
+        return res;
+    }
+
+    public static int countCharacters(String[] words, String chars) {
+        int res = 0;
+        byte[] charArr = new byte[26];
+        for (char a : chars.toCharArray()) {
+            charArr[a - 'a']++;
+        }
+        for (String word : words) {
+            byte[] tempArr = new byte[26];
+            boolean isValid = true;
+            for (char b : word.toCharArray()) {
+                tempArr[b - 'a']++;
+                if (tempArr[b - 'a'] > charArr[b - 'a']) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (isValid) {
+                res += word.length();
+            }
+        }
+        return res;
     }
 
     public static boolean isPossible(int[] target) {
