@@ -33,6 +33,7 @@ class Practice {
             steps += Math.abs(a - median);
         }
         return steps;
+
         // Second Version
         // int left = 0, right = nums.length - 1, steps = 0;
         // Arrays.sort(nums);
