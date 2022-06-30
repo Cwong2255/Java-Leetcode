@@ -21,14 +21,27 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        String[] keyStrings = { "daniel", "daniel", "daniel", "luis", "luis", "luis", "luis" };
-        String[] timeStrings = { "10:00", "10:40", "11:00", "09:00", "11:00", "13:00", "15:00" };
+        int[] arr = { 1, 2, 3 };
+        System.out.println(minMoves2(arr));
     }
 
-    public static List<String> alertNames(String[] keyName, String[] keyTime) {
-        List<String> names = new ArrayList<>();
-        Arrays.sort(keyTime);
-        return names;
+    public static int minMoves2(int[] nums) {
+        int steps = 0, median = 0;
+        Arrays.sort(nums);
+        median = nums.length % 2 == 0 ? (nums[nums.length / 2] + nums[nums.length / 2 + 1]) / 2 : nums[nums.length / 2];
+        for (int a : nums) {
+            steps += Math.abs(a - median);
+        }
+        return steps;
+        // Second Version
+        // int left = 0, right = nums.length - 1, steps = 0;
+        // Arrays.sort(nums);
+        // while (left < right) {
+        // steps += nums[right] - nums[left];
+        // right--;
+        // left++;
+        // }
+        // return steps;
     }
 
     public static int longestCommonSubsequence(String text1, String text2) {
