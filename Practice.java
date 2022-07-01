@@ -21,8 +21,22 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 2, 3 };
-        System.out.println(minMoves2(arr));
+        int[][] arr = { { 5, 10 }, { 2, 5 }, { 4, 7 }, { 3, 9 } };
+        System.out.println(maximumUnits(arr, 10));
+    }
+
+    public static int maximumUnits(int[][] boxTypes, int truckSize) {
+        int maxUnits = 0;
+        Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+        for (int[] box : boxTypes) {
+            int boxCount = Math.min(truckSize, box[0]);
+            maxUnits += boxCount * box[1];
+            truckSize -= boxCount;
+            if (truckSize == 0) {
+                break;
+            }
+        }
+        return maxUnits;
     }
 
     public static int minMoves2(int[] nums) {
