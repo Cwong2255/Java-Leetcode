@@ -21,8 +21,31 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[][] arr = { { 5, 10 }, { 2, 5 }, { 4, 7 }, { 3, 9 } };
-        System.out.println(maximumUnits(arr, 10));
+        int[] arr = { 100, 4, 200, 1, 3, 2, 5 };
+        System.out.println(longestConsecutive(arr));
+    }
+
+    public static int longestConsecutive(int[] nums) {
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        int max = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int a : nums) {
+            set.add(a);
+        }
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int currentNum = num;
+                int currentMax = 1;
+                while (set.contains(currentNum + 1)) {
+                    currentNum++;
+                    currentMax++;
+                }
+                max = Math.max(max, currentMax);
+            }
+        }
+        return max;
     }
 
     public static int maximumUnits(int[][] boxTypes, int truckSize) {
