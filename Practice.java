@@ -21,8 +21,79 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 100, 4, 200, 1, 3, 2, 5 };
-        System.out.println(longestConsecutive(arr));
+        int[] arr = { 186, 419, 83, 408 };
+        System.out.println(coinChange(arr, 6249));
+    }
+
+    public static int coinChange(int[] coins, int amount) {
+        if (amount == 0)
+            return 0;
+        int minCoin = 0;
+        int index = coins.length - 1;
+        Arrays.sort(coins);
+        while (index > -1 && amount != 0) {
+            if (amount >= coins[index]) {
+                amount -= coins[index];
+                minCoin++;
+            } else {
+                index--;
+            }
+            System.out.println("Amount : " + amount);
+            System.out.println(minCoin);
+        }
+        System.out.println(minCoin);
+        return minCoin != 0 && amount == 0 ? minCoin : -1;
+    }
+
+    public static boolean isHappy(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        while (n != 1) {
+            int current = n;
+            int sum = 0;
+            while (current != 0) {
+                sum += Math.pow(current % 10, 2);
+                current /= 10;
+            }
+            if (set.contains(sum)) {
+                return false;
+            }
+            n = sum;
+            set.add(n);
+        }
+        return true;
+    }
+
+    public static int largestPerimeter(int[] nums) {
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        ArrayList<Integer> window = new ArrayList<>();
+        for (int a : nums) {
+            maxHeap.offer(a);
+        }
+        while (!maxHeap.isEmpty()) {
+            window.add(maxHeap.poll());
+            if (window.size() == 3) {
+                if (window.get(2) + window.get(1) > window.get(0)) {
+                    return window.get(0) + window.get(1) + window.get(2);
+                }
+                window.remove(0);
+            }
+        }
+
+        return 0;
+    }
+
+    public static boolean isIsomorphic(String s, String t) {
+        HashMap<Character, Character> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!map.containsKey(s.charAt(i))) {
+                if (map.containsValue(t.charAt(i)))
+                    return false;
+                map.put(s.charAt(i), t.charAt(i));
+            } else if (map.get(s.charAt(i)) != t.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static int longestConsecutive(int[] nums) {
