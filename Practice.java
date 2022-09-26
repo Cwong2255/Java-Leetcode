@@ -21,28 +21,32 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 186, 419, 83, 408 };
-        System.out.println(coinChange(arr, 6249));
+        int[][] arr = { { 1, 4 }, { 4, 5 }, { 5, 6 } };
+        System.out.println(Arrays.deepToString(merge(arr)));
     }
 
-    public static int coinChange(int[] coins, int amount) {
-        if (amount == 0)
-            return 0;
-        int minCoin = 0;
-        int index = coins.length - 1;
-        Arrays.sort(coins);
-        while (index > -1 && amount != 0) {
-            if (amount >= coins[index]) {
-                amount -= coins[index];
-                minCoin++;
-            } else {
-                index--;
-            }
-            System.out.println("Amount : " + amount);
-            System.out.println(minCoin);
+    public static int[][] merge(int[][] intervals) {
+        if (intervals.length == 1) {
+            return intervals;
         }
-        System.out.println(minCoin);
-        return minCoin != 0 && amount == 0 ? minCoin : -1;
+        ArrayList<int[]> list = new ArrayList<>();
+        // Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        Arrays.sort(intervals, (arr1, arr2) -> Integer.compare(arr1[0], arr2[0]));
+        int[] current = intervals[0];
+        list.add(current);
+        for (int[] interval : intervals) {
+            int currentEnd = current[1];
+            int nextStart = interval[0];
+            int nextEnd = interval[1];
+            if (currentEnd >= nextStart) {
+                current[1] = Math.max(currentEnd, nextEnd);
+            } else {
+                current = interval;
+                list.add(current);
+            }
+        }
+
+        return list.toArray(new int[list.size()][]);
     }
 
     public static boolean isHappy(int n) {
