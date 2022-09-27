@@ -21,8 +21,24 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 2, 7, 11, 15 };
-        System.out.println(numWaterBottles(15, 8));
+        int[] arr = { 4, 5, 1, 8, 2 };
+        System.out.println(Arrays.toString(productExceptSelf(arr)));
+    }
+
+    public static int[] productExceptSelf(int[] nums) {
+        int[] outputArr = new int[nums.length];
+        outputArr[0] = 1;
+        for (int i = 1; i < nums.length; i++) {
+            outputArr[i] = outputArr[i - 1] * nums[i - 1];
+        }
+
+        int rightProduct = 1;
+        for (int i = outputArr.length - 1; i > -1; i--) {
+            outputArr[i] = outputArr[i] * rightProduct;
+            rightProduct *= nums[i];
+        }
+
+        return outputArr;
     }
 
     public static int numWaterBottles(int numBottles, int numExchange) {
