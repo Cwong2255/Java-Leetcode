@@ -21,8 +21,34 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[][] arr = { { 1, 4 }, { 4, 5 }, { 5, 6 } };
-        System.out.println(Arrays.deepToString(merge(arr)));
+        int[] arr = { 2, 7, 11, 15 };
+        System.out.println(numWaterBottles(15, 8));
+    }
+
+    public static int numWaterBottles(int numBottles, int numExchange) {
+        int res = numBottles;
+        while (numBottles >= numExchange) {
+            int remainder = numBottles % numExchange;
+            numBottles /= numExchange;
+            res += numBottles;
+            numBottles += remainder;
+        }
+        return res;
+    }
+
+    public static int[] twoSum2(int[] nums, int target) {
+        if (nums.length == 2) {
+            return new int[] { 0, 1 };
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                return new int[] { map.get(target - nums[i]), i };
+            } else {
+                map.put(nums[i], i);
+            }
+        }
+        return new int[2];
     }
 
     public static int[][] merge(int[][] intervals) {
