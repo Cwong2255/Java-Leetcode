@@ -21,8 +21,25 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 4, 5, 1, 8, 2 };
-        System.out.println(Arrays.toString(productExceptSelf(arr)));
+        int[] arr = { -2, -1, 1, 2, 4, 5 };
+        System.out.println(findClosestElements(arr, 5, -4));
+    }
+
+    public static List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int left = 0, mid, right = arr.length - k;
+        while (left < right) {
+            mid = left + (right - left) / 2;
+            if (x - arr[mid] > arr[mid + k] - x) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = left; i < left + k; i++) {
+            list.add(arr[i]);
+        }
+        return list;
     }
 
     public static int[] productExceptSelf(int[] nums) {
