@@ -21,8 +21,30 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { -2, -1, 1, 2, 4, 5 };
-        System.out.println(findClosestElements(arr, 5, -4));
+        int[] arr = { 1, 2, 2 };
+        System.out.println(candy(arr));
+    }
+
+    public static int candy(int[] ratings) {
+        int res = 0;
+        int[] left = new int[ratings.length];
+        int[] right = new int[ratings.length];
+        Arrays.fill(left, 1);
+        Arrays.fill(right, 1);
+        for (int i = 1; i < left.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                left[i] = left[i - 1] + 1;
+            }
+        }
+        for (int i = right.length - 2; i > -1; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                right[i] = right[i + 1] + 1;
+            }
+        }
+        for (int i = 0; i < left.length; i++) {
+            res += Math.max(left[i], right[i]);
+        }
+        return res;
     }
 
     public static List<Integer> findClosestElements(int[] arr, int k, int x) {
