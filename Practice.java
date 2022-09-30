@@ -21,8 +21,25 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 2, 2 };
-        System.out.println(candy(arr));
+        int[] arr = { 1, 2, 2, 3, 1 };
+        System.out.println(findShortestSubArray(arr));
+    }
+
+    public static int findShortestSubArray(int[] nums) {
+        HashMap<Integer, Integer> numCount = new HashMap<>();
+        HashMap<Integer, Integer> firstSeen = new HashMap<>();
+        int minLength = 0, degree = 0;
+        for (int i = 0; i < nums.length; i++) {
+            firstSeen.putIfAbsent(nums[i], i);
+            numCount.put(nums[i], numCount.getOrDefault(nums[i], 0) + 1);
+            if (numCount.get(nums[i]) > degree) {
+                degree = numCount.get(nums[i]);
+                minLength = i - firstSeen.get(nums[i]) + 1;
+            } else if (numCount.get(nums[i]) == degree) {
+                minLength = Math.min(minLength, i - firstSeen.get(nums[i]) + 1);
+            }
+        }
+        return minLength;
     }
 
     public static int candy(int[] ratings) {
