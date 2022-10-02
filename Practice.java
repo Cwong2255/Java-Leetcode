@@ -21,8 +21,87 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 2, 2, 3, 1 };
-        System.out.println(findShortestSubArray(arr));
+        int[] arr = { 10, 2, -5 };
+        System.out.println(Arrays.toString(asteroidCollision(arr)));
+
+    }
+
+    public static int[] asteroidCollision(int[] asteroids) {
+        // We are given an array asteroids of integers representing asteroids in a row.
+
+        // For each asteroid, the absolute value represents its size, and the sign
+        // represents its direction (positive meaning right, negative meaning left).
+        // Each asteroid moves at the same speed.
+
+        // Find out the state of the asteroids after all collisions. If two asteroids
+        // meet, the smaller one will explode. If both are the same size, both will
+        // explode. Two asteroids moving in the same direction will never meet.
+        Stack<Integer> stack = new Stack();
+        for (int i = 0; i < asteroids.length; i++) {
+            if (stack.isEmpty() || asteroids[i] > 0) {
+                stack.push(asteroids[i]);
+            } else {
+                while (true) {
+                    int peek = stack.peek();
+                    if (peek < 0) {
+                        stack.push(asteroids[i]);
+                        break;
+                    } else if (peek == -asteroids[i]) {
+                        stack.pop();
+                        break;
+                    } else if (peek > -asteroids[i]) {
+                        break;
+                    } else {
+                        stack.pop();
+                        if (stack.isEmpty()) {
+                            stack.push(asteroids[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        int[] arr = new int[stack.size()];
+        int index = arr.length - 1;
+        while (!stack.isEmpty()) {
+            arr[index] = stack.pop();
+            index--;
+        }
+        return arr;
+    }
+
+    public static int[] sortedSquares2(int[] nums) {
+        int[] arr = new int[nums.length];
+        int low = 0, high = nums.length - 1;
+        int index = nums.length - 1;
+        while (low <= high && index > -1) {
+            if (nums[low] * nums[low] >= nums[high] * nums[high]) {
+                arr[index] = nums[low] * nums[low];
+                low++;
+            } else {
+                arr[index] = nums[high] * nums[high];
+                high--;
+
+            }
+            index--;
+        }
+        return arr;
+    }
+
+    public static int search(int[] nums, int target) {
+        int low = 0, middle, high = nums.length - 1;
+        while (low <= high) {
+            middle = low + (high - low) / 2;
+            if (nums[middle] == target) {
+                return middle;
+            } else if (target > nums[middle]) {
+                low = middle + 1;
+            } else {
+                high = middle - 1;
+            }
+        }
+
+        return -1;
     }
 
     public static int findShortestSubArray(int[] nums) {
@@ -1483,7 +1562,7 @@ class Practice {
         int index = nums.length - 1;
 
         while (p1 <= p2 && index > -1) {
-            if (Math.abs(nums[p1]) > nums[p2]) {
+            if (Math.abs(nums[p1]) >= Math.abs(nums[p2])) {
                 newArr[index] = nums[p1] * nums[p1];
                 p1++;
             } else {
