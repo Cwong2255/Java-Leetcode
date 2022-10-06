@@ -22,21 +22,65 @@ class Practice {
 
     public static void main(String[] args) throws Exception {
         int[] arr = { 10, 2, -5 };
-        System.out.println(Arrays.toString(asteroidCollision(arr)));
+        System.out.println(maxVowels("leetcode", 3));
 
     }
 
+    public static int maxVowels(String s, int k) {
+        HashSet<Character> vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+        int vowelCount = 0;
+        for (int i = 0; i < k; i++) {
+            if (vowels.contains(s.charAt(i))) {
+                vowelCount++;
+            }
+        }
+        if (vowelCount == k) {
+            return vowelCount;
+        }
+        int left = 0, right = k - 1, maxVowel = vowelCount;
+        while (right < s.length() - 1) {
+            if (vowels.contains(s.charAt(left))) {
+                vowelCount--;
+            }
+            left++;
+            right++;
+            if (vowels.contains(s.charAt(right))) {
+                vowelCount++;
+            }
+            if (vowelCount == k) {
+                return vowelCount;
+            }
+            maxVowel = Math.max(maxVowel, vowelCount);
+        }
+        return maxVowel;
+    }
+
+    static class ProductOfNumbers {
+        ArrayList<Integer> list;
+
+        public ProductOfNumbers() {
+            list = new ArrayList<>();
+            list.add(1);
+        }
+
+        public void add(int num) {
+            if (num == 0) {
+                list.clear();
+                list.add(1);
+            } else {
+                list.add(num * list.get(list.size() - 1));
+            }
+        }
+
+        public int getProduct(int k) {
+            if (list.size() - k - 1 < 0)
+                return 0;
+            return list.get(list.size() - 1) / list.get(list.size() - 1 - k);
+        }
+    }
+
     public static int[] asteroidCollision(int[] asteroids) {
-        // We are given an array asteroids of integers representing asteroids in a row.
-
-        // For each asteroid, the absolute value represents its size, and the sign
-        // represents its direction (positive meaning right, negative meaning left).
-        // Each asteroid moves at the same speed.
-
-        // Find out the state of the asteroids after all collisions. If two asteroids
-        // meet, the smaller one will explode. If both are the same size, both will
-        // explode. Two asteroids moving in the same direction will never meet.
-        Stack<Integer> stack = new Stack();
+        Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < asteroids.length; i++) {
             if (stack.isEmpty() || asteroids[i] > 0) {
                 stack.push(asteroids[i]);
