@@ -21,8 +21,24 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 2, 3, 1 };
-        System.out.println(rob(arr));
+        int[] arr = { 1, 2, 3, 1, 2, 3 };
+        System.out.println(containsNearbyDuplicate2(arr, 2));
+    }
+
+    public static boolean containsNearbyDuplicate2(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                if (i - map.get(nums[i]) <= k) {
+                    return true;
+                } else {
+                    map.put(nums[i], i);
+                }
+            } else if (!map.containsKey(nums[i])) {
+                map.put(nums[i], i);
+            }
+        }
+        return false;
     }
 
     public static int rob(int[] nums) {
