@@ -21,8 +21,32 @@ import java.util.regex.Pattern;
 class Practice {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 1, 2, 3, 1, 2, 3 };
-        System.out.println(tribonacci(25));
+        int[] arr = { 1, 100, 1, 1, 1, 100, 1, 1, 100, 1 };
+        System.out.println(minCostClimbingStairs(arr));
+    }
+
+    public static int minCostClimbingStairs(int[] cost) {
+        int dp[] = new int[cost.length + 1];
+        int oneStep, twoStep;
+        for (int i = 2; i < dp.length; i++) {
+            oneStep = cost[i - 1] + dp[i - 1];
+            twoStep = cost[i - 2] + dp[i - 2];
+            dp[i] = Math.min(oneStep, twoStep);
+        }
+        return dp[dp.length - 1];
+    }
+
+    public static int climbStairs(int n) {
+        if (n < 3) {
+            return n;
+        }
+        int dp[] = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i < dp.length; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[dp.length - 1];
     }
 
     public static int tribonacci(int n) {
