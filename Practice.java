@@ -22,7 +22,24 @@ class Practice {
 
     public static void main(String[] args) throws Exception {
         int[] arr = { 1, 100, 1, 1, 1, 100, 1, 1, 100, 1 };
-        System.out.println(minCostClimbingStairs(arr));
+        System.out.println(frequencySort("Aabb"));
+    }
+
+    public static String frequencySort(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        List<Character> characters = new ArrayList<>(map.keySet());
+        Collections.sort(characters, (a, b) -> map.get(b) - map.get(a));
+        StringBuilder res = new StringBuilder();
+        for (char c : characters) {
+            // for (int i = 0; i < map.get(c); i++) {
+            // res.append(c);
+            // }
+            res.append(String.valueOf(c).repeat(map.get(c)));
+        }
+        return res.toString();
     }
 
     public static int minCostClimbingStairs(int[] cost) {
